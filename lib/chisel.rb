@@ -9,6 +9,8 @@ def convert_line(line)
   new_line = ''
   if line.include? '#'
     return new_line = heading_line(line)
+  # elsif line.include? '*'
+  #   return new_line = emp_line(line)
   else
     return new_line = paragraph_line(line)
   end
@@ -28,6 +30,16 @@ def heading_line(line)
     return "<h1>#{line}</h1>\n"
   end
 end
+
+# def emp_line(line)
+#   emp_counter = 0
+#   chars = line.split('')
+#
+#   chars.each_with_index do |char, idx|
+#     if char == '*' && chars[idx + 1] == '*'
+#
+#
+# end
 
 def paragraph_line(line)
   "<p>#{line}</p>"
