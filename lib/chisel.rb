@@ -1,29 +1,43 @@
-require 'pry'
-
-def convert_text(incoming_text)
+def convert_file(incoming_text, html_file)
   incoming_text.each_line do |line|
-    new_line = ''
-    if line.include? '#'
-      new_line = heading_line(line)
-    end
-    html_file.write(new_line)
+    new_line = convert_line(line)
+    write_to_file(html_file, new_line)
   end
 end
 
-def heading_line(line)
-  if line.include? '##'
-    line.delete('#')
-    return "<h2> #{line} </h2>"
-  elsif line.include? '###'
-    line.delete('#')
-    return "<h3> #{line} </h3>"
+def convert_line(line)
+  new_line = ''
+  if line.include? '#'
+    return new_line = heading_line(line)
   else
-    line.delete('#')
-    return "<h1> #{line} </h1>"
+    return new_line = paragraph_line(line)
   end
+  new_line
+end
+
+def heading_line(line)
+  line = line.chomp
+  if line.include? '##'
+    line.delete!'# '
+    return "<h2>#{line}</h2>\n"
+  elsif line.include? '###'
+    line.delete!'# '
+    return "<h3>#{line}</h3>"
+  else
+    line.delete!'# '
+    return "<h1>#{line}</h1>\n"
+  end
+end
+
+def paragraph_line(line)
+  "<p>#{line}</p>"
+end
+
+def write_to_file(html_file, new_line)
+  html_file.write(new_line)
 end
 
 markdown_file = File.open(ARGV[0], 'r')
 incoming_text = markdown_file.read
 html_file = File.open(ARGV[1], 'w')
-convert_text(incoming_text)
+convert_file(incoming_text, html_file)
